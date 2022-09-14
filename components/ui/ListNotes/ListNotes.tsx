@@ -22,7 +22,7 @@ const ListNotes = () => {
     }
 
     return (
-        <div className="w-[250px] overflow-auto">
+        <div className="w-[300px] overflow-auto">
             {
                 notes.map((note, idx) => {
                     //sometimes note date is string so need to convert back to Date object
