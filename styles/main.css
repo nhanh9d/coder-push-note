@@ -25,7 +25,7 @@ body {
     'Helvetica', sans-serif;
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
-  @apply text-white bg-zinc-800 antialiased;
+  @apply bg-[#f5f5f5] antialiased;
 }
 
 body {
@@ -37,16 +37,39 @@ body {
 a {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-
-.animated {
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #E0D5B8 #DFE9EB;
 }
 
-.height-screen-helper {
-  height: calc(100vh - 80px);
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+  width: 7px;
+  width: 7px;
+}
+*::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: #DFE9EB;
+}
+
+*::-webkit-scrollbar-track:hover {
+  background-color: #B8C0C2;
+}
+
+*::-webkit-scrollbar-track:active {
+  background-color: #B8C0C2;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #E0D5B8;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #CFC6AA;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: #F2E7C7;
 }

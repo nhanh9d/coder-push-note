@@ -1,17 +1,15 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import Navbar from 'components/ui/Navbar';
-import Footer from 'components/ui/Footer';
 import { ReactNode } from 'react';
-import { PageMeta } from '../types';
+import { NotesContextType, PageMeta } from '../types';
 
-interface Props {
+interface Props extends NotesContextType {
   children: ReactNode;
   meta?: PageMeta;
 }
 
-export default function Layout({ children, meta: pageMeta }: Props) {
+export default function Layout({ children, meta: pageMeta, notes, setNotes }: Props) {
   const router = useRouter();
   const meta = {
     title: 'Next.js Subscription Starter',
@@ -39,9 +37,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
         <meta name="twitter:description" content={meta.description} />
         <meta name="twitter:image" content={meta.cardImage} />
       </Head>
-      <Navbar />
       <main id="skip">{children}</main>
-      <Footer />
     </>
   );
 }

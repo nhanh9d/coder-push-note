@@ -1,49 +1,87 @@
-import Link from 'next/link';
 import s from './Navbar.module.css';
 
-import Logo from 'components/icons/Logo';
 import { useUser } from 'utils/useUser';
-import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs';
 import { useRouter } from 'next/router';
+import { MouseEvent, useContext, useEffect, useState } from 'react';
+import NotesContext from '@/utils/notesContext';
+import ListBtn from '../Buttons/ListBtn';
+import GalleryBtn from '../Buttons/GalleryBtn';
+import DeleteBtn from '../Buttons/DeleteBtn';
+import NewBtn from '../Buttons/NewBtn';
 
 const Navbar = () => {
-  const { user } = useUser();
   const router = useRouter();
+
+  const { user } = useUser();
+  const { notes, setNotes } = useContext(NotesContext);
+  const [isDisableNewButton, setDisableNewButton] = useState(false);
+  const [isDisableDeleteButton, setDisableDeleteButton] = useState(false);
+  const currentNotes = notes.map(x => x);
+
+  useEffect(() => {
+    const hasNote = notes.length > 0;
+    const isActiveNoteEmpty = notes.filter(n => n.active && n.content).length == 0 && hasNote;
+
+    setDisableDeleteButton(!hasNote);
+    setDisableNewButton(isActiveNoteEmpty);
+  }, [notes])
+
+  const onDelete = (event: MouseEvent) => {
+    const remainingNotes = notes.filter(n => !n.active);
+    setNotes(remainingNotes);
+  }
+
+  const onShowAsGallery = (event: MouseEvent) => {
+
+  }
+
+  const onShowAsList = (event: MouseEvent) => {
+
+  }
+
+  const onAddNew = (event: MouseEvent) => {
+    //append to list
+    currentNotes.forEach(n => n.active = false);
+    currentNotes.push({
+      title: null,
+      shortDescription: null,
+      content: null,
+      date: new Date(),
+      userId: user ? user.id : '',
+      active: true
+    });
+
+    setNotes(currentNotes);
+    setDisableNewButton(true);
+  }
 
   return (
     <nav className={s.root}>
       <a href="#skip" className="sr-only focus:not-sr-only">
         Skip to content
       </a>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto px-6">
         <div className="flex justify-between align-center flex-row py-4 md:py-6 relative">
-          <div className="flex flex-1 items-center">
-            <Link href="/">
-              <a className={s.logo} aria-label="Logo">
-                <Logo />
-              </a>
-            </Link>
-            <nav className="space-x-2 ml-6 hidden lg:block">
-              <Link href="/">
-                <a className={s.link}>Pricing</a>
-              </Link>
-              <Link href="/account">
-                <a className={s.link}>Account</a>
-              </Link>
+          <div className="flex flex-2 items-center">
+            <nav className="space-x-2 hidden lg:block">
+              <ListBtn mouseEventHandler={onShowAsList} disable={false} />
+              <GalleryBtn mouseEventHandler={onShowAsGallery} disable={false} />
+              <DeleteBtn mouseEventHandler={onDelete} disable={isDisableDeleteButton} />
+              <NewBtn mouseEventHandler={onAddNew} disable={isDisableNewButton} />
             </nav>
           </div>
 
-          <div className="flex flex-1 justify-end space-x-8">
+          {/* <div className="flex flex-1 justify-end space-x-8">
             {user ? (
               <Link href="/api/auth/logout">
                 <a className={s.link}>Sign out</a>
               </Link>
             ) : (
               <Link href="/signin">
-                <a className={s.link}>Sign in</a>
+                <a className={s.link}>Sign in to sync your notes</a>
               </Link>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </nav>
