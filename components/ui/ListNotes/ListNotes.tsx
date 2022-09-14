@@ -40,7 +40,7 @@ const ListNotes = () => {
 
                     return (
                         <div className="border-b-2 border-[#ececec] cursor-pointer" key={idx} onClick={() => { changeActiveNote(idx) }} >
-                            <div className={`my-1 mr-4 p-3 ${note.active && "bg-[#f2e7c7]"} rounded-lg`}>
+                            <div className={`my-1 mr-4 ml-4 sm: ml-6 p-3 ${note.active && "bg-[#f2e7c7]"} rounded-lg`}>
                                 <div className="flex font-bold text-lg text-[#4e4631]">
                                     <p className={today ? "flex-none w-[90px] hover:text-clip truncate" : ""}>{note.title ? note.title : "New Note"}</p>
                                     {today ? <p className="flex-1"> - {dateStr}</p> : <></>}
