@@ -23,7 +23,7 @@ const NoteDetail = () => {
     const onEditorBlur = (event: FocusEvent) => {
         const innerHtml = event.currentTarget.innerHTML;
         const childNodes = event.currentTarget.childNodes;
-        if (currentNote != null && childNodes.length) {
+        if (currentNote != null && childNodes.length && currentNote.content != innerHtml) {
             const title = childNodes[0].textContent;
             currentNote.title = title;
             
