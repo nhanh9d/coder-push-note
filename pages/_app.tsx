@@ -13,11 +13,18 @@ import { Note } from 'types';
 import Navbar from '@/components/ui/Navbar';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const [notes, setNotes] = useState<Note[]>([]);
+
   useEffect(() => {
+    const localNotesString = localStorage.getItem("notes");
+    if (localNotesString) {
+      const localNotes = JSON.parse(localNotesString) as Note[];
+      setNotes(localNotes);
+    }
+
     document.body.classList?.remove('loading');
   }, []);
 
-  const [notes, setNotes] = useState<Note[]>([]);
 
   return (
     <div className="">

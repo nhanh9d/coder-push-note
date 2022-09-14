@@ -19,28 +19,29 @@ const NoteDetail = () => {
 
         setCurrentNote(activeNote);
     }, [notes]);
-
+    
     const onEditorBlur = (event: FocusEvent) => {
         const innerHtml = event.currentTarget.innerHTML;
         const childNodes = event.currentTarget.childNodes;
         if (currentNote != null && childNodes.length) {
             const title = childNodes[0].textContent;
             currentNote.title = title;
-
+            
             const shortDescription = childNodes.length > 1 ? getShortDescription(1, childNodes) : null;
             currentNote.shortDescription = shortDescription;
-
+            
             currentNote.content = innerHtml;
             currentNote.date = new Date();
-
+            
             const otherNotes = notes.filter(n => !n.active);
             otherNotes.push(currentNote);
             otherNotes.sort((a, b) => Number(b.date) - Number(a.date))
-
+            
+            localStorage.setItem("notes", JSON.stringify(otherNotes));
             setNotes(otherNotes);
         }
     }
-
+    
     const getShortDescription = (nodeNo: number, listNodes: NodeListOf<ChildNode>): string | null => {
         let content = listNodes[nodeNo].textContent;
         if ((content == null || content.length == 0) && nodeNo++ < listNodes.length - 1) {
