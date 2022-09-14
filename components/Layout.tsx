@@ -12,9 +12,9 @@ interface Props extends NotesContextType {
 export default function Layout({ children, meta: pageMeta, notes, setNotes }: Props) {
   const router = useRouter();
   const meta = {
-    title: 'Next.js Subscription Starter',
-    description: 'Brought to you by Vercel, Stripe, and Supabase.',
-    cardImage: '/og.png',
+    title: "Let's note",
+    description: 'Brought to you by Nhat Anh Dang.',
+    cardImage: '/nhatanh.jpg',
     ...pageMeta
   };
 

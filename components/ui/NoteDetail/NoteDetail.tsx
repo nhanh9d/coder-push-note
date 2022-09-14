@@ -12,36 +12,14 @@ const NoteDetail = () => {
         const filter = notes.filter(n => n.active);
         const activeNote = filter && filter.length ? filter[0] : null;
 
-        const editor = document.getElementById("editor");
-        if (editor && activeNote) {
-            editor.focus();
-        }
-
         setCurrentNote(activeNote);
     }, [notes]);
-    
+
     const onEditorBlur = (event: FocusEvent) => {
-        const innerHtml = event.currentTarget.innerHTML;
-        const childNodes = event.currentTarget.childNodes;
-        if (currentNote != null && childNodes.length && currentNote.content != innerHtml) {
-            const title = childNodes[0].textContent;
-            currentNote.title = title;
-            
-            const shortDescription = childNodes.length > 1 ? getShortDescription(1, childNodes) : null;
-            currentNote.shortDescription = shortDescription;
-            
-            currentNote.content = innerHtml;
-            currentNote.date = new Date();
-            
-            const otherNotes = notes.filter(n => !n.active);
-            otherNotes.push(currentNote);
-            otherNotes.sort((a, b) => Number(b.date) - Number(a.date))
-            
-            localStorage.setItem("notes", JSON.stringify(otherNotes));
-            setNotes(otherNotes);
-        }
+        const editor = event.currentTarget as HTMLDivElement;
+        saveNote(editor);
     }
-    
+
     const getShortDescription = (nodeNo: number, listNodes: NodeListOf<ChildNode>): string | null => {
         let content = listNodes[nodeNo].textContent;
         if ((content == null || content.length == 0) && nodeNo++ < listNodes.length - 1) {
@@ -54,6 +32,7 @@ const NoteDetail = () => {
         const editor = event.currentTarget as HTMLDivElement;
         const firstChild = editor.firstChild;
 
+        //because firstChild always text node so have to change back to element node
         if (firstChild != null && firstChild.nodeType === 3) {
             const h3 = document.createElement('h3');
             h3.className = "font-bold text-lg";
@@ -61,6 +40,34 @@ const NoteDetail = () => {
 
             editor.insertBefore(h3, firstChild);
             editor.removeChild(firstChild);
+        }
+
+        saveNote(editor, false);
+    }
+
+    const saveNote = (editor: HTMLDivElement, updateState = true) => {
+        const innerHtml = editor.innerHTML;
+        const childNodes = editor.childNodes;
+
+        if (currentNote != null && childNodes.length) {
+            const title = childNodes[0].textContent;
+            currentNote.title = title;
+
+            const shortDescription = childNodes.length > 1 ? getShortDescription(1, childNodes) : null;
+            currentNote.shortDescription = shortDescription;
+
+            currentNote.content = innerHtml;
+            currentNote.date = new Date();
+
+            const otherNotes = notes.filter(n => !n.active);
+            otherNotes.push(currentNote);
+            otherNotes.sort((a, b) => Number(b.date) - Number(a.date))
+
+            localStorage.setItem("notes", JSON.stringify(otherNotes));
+
+            if (updateState) {
+                setNotes(otherNotes);
+            }
         }
     }
 
