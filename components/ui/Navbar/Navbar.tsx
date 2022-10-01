@@ -3,32 +3,22 @@ import s from './Navbar.module.css';
 import { useUser } from 'utils/useUser';
 import { useRouter } from 'next/router';
 import { MouseEvent, useContext, useEffect, useState } from 'react';
-import NotesContext from '@/utils/notesContext';
+// import NotesContext from '@/utils/notesContext';
 import ListBtn from '../Buttons/ListBtn';
 import GalleryBtn from '../Buttons/GalleryBtn';
 import DeleteBtn from '../Buttons/DeleteBtn';
 import NewBtn from '../Buttons/NewBtn';
+import CoderPushAuth from './CoderPushAuth';
+import Link from 'next/link';
 
 const Navbar = () => {
-  const router = useRouter();
-
   const { user } = useUser();
-  const { notes, setNotes } = useContext(NotesContext);
-  const [isDisableNewButton, setDisableNewButton] = useState(false);
-  const [isDisableDeleteButton, setDisableDeleteButton] = useState(false);
+  const { notes, updateNotes } = useUser();
   const currentNotes = notes.map(x => x);
-
-  useEffect(() => {
-    const hasNote = notes.length > 0;
-    const isActiveNoteEmpty = notes.filter(n => n.active && n.content).length == 0 && hasNote;
-
-    setDisableDeleteButton(!hasNote);
-    setDisableNewButton(isActiveNoteEmpty);
-  }, [notes])
 
   const onDelete = (event: MouseEvent) => {
     const remainingNotes = notes.filter(n => !n.active);
-    setNotes(remainingNotes);
+    updateNotes(remainingNotes);
   }
 
   const onShowAsGallery = (event: MouseEvent) => {
@@ -39,20 +29,24 @@ const Navbar = () => {
 
   }
 
-  const onAddNew = (event: MouseEvent) => {
+  const onAddNew = async (event: MouseEvent) => {
     //append to list
+    const res = await fetch('/api/note/id');
+    const body = await res.json();
+    const local_id = body.local_id;
     currentNotes.forEach(n => n.active = false);
     currentNotes.push({
       title: null,
-      shortDescription: null,
+      short_description: null,
       content: null,
-      date: new Date(),
-      userId: user ? user.id : '',
-      active: true
+      created_at: new Date(),
+      updated_at: new Date(),
+      user_id: user ? user.id : '',
+      active: true,
+      local_id: local_id
     });
 
-    setNotes(currentNotes);
-    setDisableNewButton(true);
+    updateNotes(currentNotes);
   }
 
   return (
@@ -61,24 +55,22 @@ const Navbar = () => {
         <div className="flex justify-between align-center flex-row py-4 md:py-6 relative">
           <div className="flex flex-2 items-center">
             <nav className="space-x-2 hidden lg:block">
-              <ListBtn mouseEventHandler={onShowAsList} disable={false} />
-              <GalleryBtn mouseEventHandler={onShowAsGallery} disable={false} />
-              <DeleteBtn mouseEventHandler={onDelete} disable={isDisableDeleteButton} />
-              <NewBtn mouseEventHandler={onAddNew} disable={isDisableNewButton} />
+              <ListBtn mouseEventHandler={onShowAsList} />
+              <GalleryBtn mouseEventHandler={onShowAsGallery} />
+              <DeleteBtn mouseEventHandler={onDelete} />
+              <NewBtn mouseEventHandler={onAddNew} />
             </nav>
           </div>
 
-          {/* <div className="flex flex-1 justify-end space-x-8">
+          <div className="flex flex-1 justify-end space-x-8">
             {user ? (
               <Link href="/api/auth/logout">
-                <a className={s.link}>Sign out</a>
+                <button type="button">Sign out</button>
               </Link>
             ) : (
-              <Link href="/signin">
-                <a className={s.link}>Sign in to sync your notes</a>
-              </Link>
+              <CoderPushAuth />
             )}
-          </div> */}
+          </div>
         </div>
       </div>
     </nav>

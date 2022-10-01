@@ -1,6 +1,6 @@
 import { IconProps } from "types";
 
-const GalleryBtn = ({ disable = false, ...props }: IconProps) => (
+const GalleryBtn = (props: IconProps) => (
   <button type="button" onClick={props.mouseEventHandler} title="show as gallery">
     <svg
       className="h-8 w-8 text-gray-500 inline-block"

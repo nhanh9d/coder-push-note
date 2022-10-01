@@ -1,11 +1,12 @@
-import NotesContext from "@/utils/notesContext";
+// import NotesContext from "@/utils/notesContext";
 import { useContext } from "react";
 import format from "date-fns/format";
 import { DEFAULT_PLACEHOLDER } from "@/utils/constants";
 import { isToday, parseISO } from "date-fns";
+import { useUser } from "@/utils/useUser";
 
 const ListNotes = () => {
-    const { notes, setNotes } = useContext(NotesContext);
+    const { notes, updateNotes } = useUser();
 
     const changeActiveNote = (idx: number) => {
         const activeNote = notes[idx];
@@ -17,7 +18,7 @@ const ListNotes = () => {
                 return note;
             });
 
-            setNotes(newNotes);
+            updateNotes(newNotes);
         }
     }
 
@@ -27,14 +28,14 @@ const ListNotes = () => {
                 notes.length ?
                     notes.map((note, idx) => {
                         //sometimes note date is string so need to convert back to Date object
-                        if (typeof note.date === "string") {
-                            note.date = parseISO(note.date)
+                        if (typeof note.updated_at === "string") {
+                            note.updated_at = parseISO(note.updated_at)
                         }
                         //get Date string
-                        const dateStr = format(note.date, "dd/MM/yyyy");
-                        const today = isToday(note.date);
-                        const timeStr = format(note.date, "hh:mm aaaaa'm'")
-                        let shortDescription = note.shortDescription ? note.shortDescription : DEFAULT_PLACEHOLDER;
+                        const dateStr = format(note.updated_at, "dd/MM/yyyy");
+                        const today = isToday(note.updated_at);
+                        const timeStr = format(note.updated_at, "hh:mm aaaaa'm'")
+                        let shortDescription = note.short_description ? note.short_description : DEFAULT_PLACEHOLDER;
                         if (shortDescription.length > 20) {
                             shortDescription = `${shortDescription.substring(0, 15)}...`;
                         }

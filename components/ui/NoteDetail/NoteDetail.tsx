@@ -1,11 +1,11 @@
-import NotesContext from "@/utils/notesContext";
-import dynamic from "next/dynamic";
+// import NotesContext from "@/utils/notesContext";
+import { useUser } from "@/utils/useUser";
 import { FocusEvent, KeyboardEvent, useContext, useEffect, useState } from "react";
 import { Note } from "types";
 import './NoteDetail.module.css'
 
 const NoteDetail = () => {
-    const { notes, setNotes } = useContext(NotesContext);
+    const { notes, updateNote, userDetails } = useUser()
     const [currentNote, setCurrentNote] = useState<Note | null>(null);
 
     useEffect(() => {
@@ -54,20 +54,16 @@ const NoteDetail = () => {
             currentNote.title = title;
 
             const shortDescription = childNodes.length > 1 ? getShortDescription(1, childNodes) : null;
-            currentNote.shortDescription = shortDescription;
+            currentNote.short_description = shortDescription;
 
             currentNote.content = innerHtml;
-            currentNote.date = new Date();
+            currentNote.updated_at = new Date();
 
-            const otherNotes = notes.filter(n => !n.active);
-            otherNotes.push(currentNote);
-            otherNotes.sort((a, b) => Number(b.date) - Number(a.date))
-
-            localStorage.setItem("notes", JSON.stringify(otherNotes));
-
-            if (updateState) {
-                setNotes(otherNotes);
+            if (userDetails != null) {
+                currentNote.user_id = userDetails.id;
             }
+
+            updateNote(currentNote, updateState);
         }
     }
 

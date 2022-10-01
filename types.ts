@@ -17,17 +17,19 @@ export interface UserDetails {
 export interface IconProps {
   className?: string;
   mouseEventHandler: MouseEventHandler;
-  disable: boolean;
   hide?: boolean;
 }
 
 export interface Note {
+  id?: string,
   title: string | null,
-  shortDescription: string | null,
+  short_description: string | null,
   content: string | null,
-  date: Date,
-  userId?: string;
+  created_at: Date,
+  updated_at: Date,
+  user_id?: string;
   active: boolean;
+  local_id: string;
 }
 
 export interface NotesContextType {
