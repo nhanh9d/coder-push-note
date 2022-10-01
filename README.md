@@ -20,6 +20,6 @@ The all-in-one note for your brain.
 ## Update 1.0.1
 
 - I have sync across your devices.
-- you can create an account and let me sync.
+- you can create an account and let me sync (need to find out why login screen is so long).
 
 
