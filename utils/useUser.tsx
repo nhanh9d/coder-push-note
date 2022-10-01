@@ -97,7 +97,7 @@ export const CoderPushUserProvider = (props: Props) => {
     if (error) {
       console.log(error);
     }
-    else {
+    if (data != null) {
       setNotes(data);
     }
   }
