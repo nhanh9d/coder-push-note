@@ -16,3 +16,10 @@ The all-in-one note for your brain.
 - Mouse change when hover detail, list and buttons
 - Don't worry when you close your browser or your pc is restarted, I saved your note in local storage already.
 - Promise, I will sync all your devices (will do).
+
+## Update 1.0.1
+
+- I have sync across your devices.
+- you can create an account and let me sync.
+
+
