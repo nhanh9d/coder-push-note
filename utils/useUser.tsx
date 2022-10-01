@@ -103,7 +103,10 @@ export const CoderPushUserProvider = (props: Props) => {
   }
 
   const updateNote = async (note: Note, updateState: boolean) => {
-    const noteInLocal = notes.filter(n => !n.active);
+    const noteInLocal = notes.filter(n => n.local_id != note.local_id).map(n => {
+      n.active = false;
+      return n;
+    });
     noteInLocal.push(note);
     noteInLocal.sort((a, b) => Number(b.updated_at) - Number(a.updated_at))
 
