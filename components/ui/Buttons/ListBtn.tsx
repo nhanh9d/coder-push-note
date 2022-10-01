@@ -1,6 +1,6 @@
 import { IconProps } from "types";
 
-const ListBtn = ({ disable = false, ...props }: IconProps) => (
+const ListBtn = (props: IconProps) => (
   <button type="button" onClick={props.mouseEventHandler} title="show as list">
     <span>
       <svg
