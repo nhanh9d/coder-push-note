@@ -50,11 +50,11 @@ const Navbar = () => {
   }
 
   return (
-    <nav className={s.root}>
+    <nav className={s.root + " main-nav"}>
       <div className="mx-auto px-6">
         <div className="flex justify-between align-center flex-row py-4 md:py-6 relative">
           <div className="flex flex-2 items-center">
-            <nav className="space-x-2 hidden lg:block">
+            <nav className="space-x-2 list-action">
               <ListBtn mouseEventHandler={onShowAsList} />
               <GalleryBtn mouseEventHandler={onShowAsGallery} />
               <DeleteBtn mouseEventHandler={onDelete} />

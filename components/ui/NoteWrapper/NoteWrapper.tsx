@@ -14,7 +14,7 @@ const NoteWrapper = () => {
     <section className="border-t-2 border-t-[#dcdcdc]-500">
       <div className={s.main}>
         <div className="flex sm:align-center h-full">
-          <div className="flex-initial border-r-2 border-r-[#dcdcdc]-500 h-full">
+          <div className="left-menu flex-initial border-r-2 border-r-[#dcdcdc]-500 h-full">
             <ListNotes />
           </div>
           <div className="flex-1 h-full cursor-text">
