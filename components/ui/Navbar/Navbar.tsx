@@ -13,11 +13,14 @@ import Link from 'next/link';
 
 const Navbar = () => {
   const { user } = useUser();
-  const { notes, updateNotes } = useUser();
+  const { notes, updateNotes, removeNote } = useUser();
   const currentNotes = notes.map(x => x);
 
   const onDelete = (event: MouseEvent) => {
+    const noteToDelete = notes.filter(n => n.active)[0];
     const remainingNotes = notes.filter(n => !n.active);
+
+    removeNote(noteToDelete.local_id);
     updateNotes(remainingNotes);
   }
 
