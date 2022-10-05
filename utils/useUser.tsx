@@ -14,7 +14,7 @@ type UserContextType = {
   notes: Note[];
   updateNotes: Dispatch<SetStateAction<Note[]>>;
   updateNote: (note: Note, updateState: boolean) => void;
-  removeNote: (local_id: string) => void;
+  removeNote: (local_id: string, remainingNotes: Note[]) => void;
 };
 
 export const UserContext = createContext<UserContextType | undefined>(
@@ -59,8 +59,10 @@ export const CoderPushUserProvider = (props: Props) => {
           const userDetailsPromise = results[0];
           const notesPromise = results[1];
 
-          if (userDetailsPromise.status === 'fulfilled')
+          if (userDetailsPromise.status === 'fulfilled') {
+            console.log(userDetailsPromise.value.data);
             setUserDetails(userDetailsPromise.value.data);
+          }
 
           if (notesPromise.status === 'fulfilled' && notesPromise.value.data != null)
             concatNotes(notesPromise.value.data, user.id);
@@ -145,8 +147,12 @@ export const CoderPushUserProvider = (props: Props) => {
     }
   }
 
-  const removeNote = async (local_id: string) => {
-    await supabase.from<Note>('notes').delete().eq('local_id', local_id);
+  const removeNote = async (local_id: string, remainingNotes: Note[]) => {
+    if (userDetails) {
+      await supabase.from<Note>('notes').delete().eq('local_id', local_id);
+    }
+    localStorage.setItem("notes", JSON.stringify(remainingNotes));
+    setNotes(remainingNotes);
   }
 
   const value = {

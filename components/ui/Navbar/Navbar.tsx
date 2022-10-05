@@ -20,8 +20,7 @@ const Navbar = () => {
     const noteToDelete = notes.filter(n => n.active)[0];
     const remainingNotes = notes.filter(n => !n.active);
 
-    removeNote(noteToDelete.local_id);
-    updateNotes(remainingNotes);
+    removeNote(noteToDelete.local_id, remainingNotes);
   }
 
   const onShowAsGallery = (event: MouseEvent) => {

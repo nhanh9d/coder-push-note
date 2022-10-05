@@ -6,7 +6,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "cypress": "cypress open"
+    "cypress": "cypress run",
+    "cypressui": "cypress open"
   },
   "dependencies": {
     "@supabase/supabase-auth-helpers": "^1.4.2",
